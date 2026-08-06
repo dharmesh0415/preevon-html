@@ -1,7 +1,9 @@
 import { announcementBar } from './announcement-bar.js';
+import { navbar } from './navbar.js';
 
 export const homePage = () => `
   ${announcementBar()}
+  ${navbar()}
   <main id="main-content" class="home-shell">
     <section class="container hero-card" data-animate="float-in" aria-labelledby="page-title">
       <div class="status-pill eyebrow">
@@ -18,10 +20,6 @@ export const homePage = () => `
       </div>
 
       <div class="hero-actions">
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">
-          <i data-lucide="sun-moon" aria-hidden="true"></i>
-          <span data-theme-label>Theme</span>
-        </button>
         <span class="status-pill">Production-ready structure</span>
       </div>
     </section>
