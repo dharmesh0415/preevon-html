@@ -1,4 +1,7 @@
+import { announcementBar } from './announcement-bar.js';
+
 export const homePage = () => `
+  ${announcementBar()}
   <main id="main-content" class="home-shell">
     <section class="container hero-card" data-animate="float-in" aria-labelledby="page-title">
       <div class="status-pill eyebrow">
