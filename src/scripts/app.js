@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { createIcons, icons } from 'lucide';
 import '../styles/app.css';
 import { homePage } from '../pages/home.js';
+import { initAnnouncementBar } from '../pages/announcement-bar.js';
 import { applyTheme, getStoredTheme, toggleTheme } from './theme.js';
 import { qs, setCurrentYear } from './helpers.js';
 
@@ -10,6 +11,7 @@ const mountApp = () => {
   qs('#app').innerHTML = homePage();
   createIcons({ icons });
   setCurrentYear();
+  initAnnouncementBar();
 };
 
 const initThemeControls = () => {
