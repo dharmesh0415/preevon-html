@@ -22,7 +22,7 @@ const pageLinks = [
 
 const slugify = (value) => value.toLowerCase().replaceAll(' ', '-');
 
-const pagesMenuItems = (prefix = 'mega') =>
+const pagesMenuItems = () =>
   pageLinks
     .map(
       ([label, description]) => `
@@ -96,7 +96,7 @@ export const navbar = () => `
       </div>
     </nav>
 
-    <div class="mobile-nav" id="mobile-navigation" aria-hidden="true" data-mobile-menu>
+    <div class="mobile-nav" id="mobile-navigation" aria-hidden="true" inert data-mobile-menu>
       <button class="mobile-nav__overlay" type="button" aria-label="Close menu" data-mobile-close></button>
       <aside class="mobile-nav__panel" aria-label="Mobile navigation">
         <div class="mobile-nav__header">
@@ -104,11 +104,24 @@ export const navbar = () => `
           <button class="mobile-nav__close" type="button" aria-label="Close menu" data-mobile-close><i data-lucide="x" aria-hidden="true"></i></button>
         </div>
         <div class="mobile-nav__links">
-          ${navLinks.map((link) => `<a href="${link.href}" ${link.active ? 'aria-current="page"' : ''}>${link.label}</a>`).join('')}
-          <details class="mobile-nav__details">
-            <summary>Pages <i data-lucide="chevron-down" aria-hidden="true"></i></summary>
-            <div class="mobile-nav__subnav">${pagesMenuItems('mobile')}</div>
-          </details>
+          ${navLinks
+            .slice(0, 4)
+            .map(
+              (link) =>
+                `<a href="${link.href}" ${link.active ? 'aria-current="page"' : ''}>${link.label}</a>`,
+            )
+            .join('')}
+          <div class="mobile-nav__details">
+            <button class="mobile-nav__pages-trigger" type="button" aria-expanded="false" aria-controls="mobile-pages-submenu" data-mobile-pages-trigger>
+              <span>Pages</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="mobile-nav__subnav" id="mobile-pages-submenu" hidden data-mobile-pages-panel>${pagesMenuItems()}</div>
+          </div>
+          ${navLinks
+            .slice(4)
+            .map((link) => `<a href="${link.href}">${link.label}</a>`)
+            .join('')}
         </div>
         <div class="mobile-nav__footer">
           <a class="premium-navbar__login" href="#login">Login</a>
