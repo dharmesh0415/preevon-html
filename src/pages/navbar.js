@@ -70,6 +70,11 @@ export const navbar = () => `
       </div>
 
       <div class="premium-navbar__actions">
+        <button class="premium-navbar__search" type="button" aria-label="Open search" data-search-trigger>
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span>Search</span>
+          <kbd>⌘K</kbd>
+        </button>
         <div class="theme-switcher" data-theme-menu>
           <button class="theme-switcher__trigger" type="button" aria-label="Choose color theme" aria-haspopup="true" aria-expanded="false" data-theme-trigger>
             <i data-lucide="sun-moon" aria-hidden="true"></i>
@@ -104,6 +109,10 @@ export const navbar = () => `
           <button class="mobile-nav__close" type="button" aria-label="Close menu" data-mobile-close><i data-lucide="x" aria-hidden="true"></i></button>
         </div>
         <div class="mobile-nav__links">
+          <button class="mobile-nav__search" type="button" data-search-trigger>
+            <span><i data-lucide="search" aria-hidden="true"></i> Search Preevon</span>
+            <kbd>⌘K</kbd>
+          </button>
           ${navLinks
             .slice(0, 4)
             .map(
