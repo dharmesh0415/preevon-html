@@ -5,15 +5,17 @@ import '../styles/app.css';
 import { homePage } from '../pages/home.js';
 import { initAnnouncementBar } from '../pages/announcement-bar.js';
 import { initNavbar } from './navbar.js';
+import { initSearchOverlay, searchOverlay } from './search-overlay.js';
 import { applyTheme, getStoredTheme, watchSystemTheme } from './theme.js';
 import { qs, qsa, setCurrentYear } from './helpers.js';
 
 const mountApp = () => {
-  qs('#app').innerHTML = homePage();
+  qs('#app').innerHTML = `${homePage()}${searchOverlay()}`;
   createIcons({ icons });
   setCurrentYear();
   initAnnouncementBar();
   initNavbar();
+  initSearchOverlay();
 };
 
 const initThemeControls = () => {

@@ -1,4 +1,4 @@
-import { qs, qsa } from './helpers.js';
+import { lockBodyScroll, qs, qsa, unlockBodyScroll } from './helpers.js';
 
 const closeOnEscape = (callback) => (event) => {
   if (event.key === 'Escape') callback();
@@ -67,7 +67,6 @@ export const initNavbar = () => {
   const closeButtons = qsa('[data-mobile-close]', navbar);
   const pagesTrigger = qs('[data-mobile-pages-trigger]', navbar);
   const pagesPanel = qs('[data-mobile-pages-panel]', navbar);
-  let scrollPosition = 0;
   let pagesAnimationTimer;
 
   const setMobilePagesOpen = (isOpen) => {
@@ -88,21 +87,9 @@ export const initNavbar = () => {
     }, 260);
   };
 
-  const lockBodyScroll = () => {
-    scrollPosition = window.scrollY;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  const lockMobileScroll = () => lockBodyScroll('mobile-nav');
 
-    document.body.classList.add('nav-lock');
-    document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.paddingRight = scrollbarWidth ? `${scrollbarWidth}px` : '';
-  };
-
-  const unlockBodyScroll = () => {
-    document.body.classList.remove('nav-lock');
-    document.body.style.top = '';
-    document.body.style.paddingRight = '';
-    window.scrollTo(0, scrollPosition);
-  };
+  const unlockMobileScroll = () => unlockBodyScroll('mobile-nav');
 
   const focusFirstPanelControl = () => {
     qs('[data-mobile-close]', mobileMenu)?.focus({ preventScroll: true });
@@ -120,13 +107,13 @@ export const initNavbar = () => {
     openButton.setAttribute('aria-expanded', String(isOpen));
 
     if (isOpen) {
-      lockBodyScroll();
+      lockMobileScroll();
       requestAnimationFrame(focusFirstPanelControl);
       return;
     }
 
     setMobilePagesOpen(false);
-    unlockBodyScroll();
+    unlockMobileScroll();
     openButton.focus({ preventScroll: true });
   };
 
@@ -136,8 +123,8 @@ export const initNavbar = () => {
     const isOpen = pagesTrigger.getAttribute('aria-expanded') === 'true';
     setMobilePagesOpen(!isOpen);
   });
-  qsa('.mobile-nav a', navbar).forEach((link) =>
-    link.addEventListener('click', () => setMobileOpen(false)),
+  qsa('.mobile-nav a', navbar).forEach((control) =>
+    control.addEventListener('click', () => setMobileOpen(false)),
   );
   document.addEventListener('keydown', (event) => {
     if (!navbar.classList.contains('is-mobile-open')) return;
