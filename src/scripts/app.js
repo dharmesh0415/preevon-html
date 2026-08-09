@@ -6,7 +6,7 @@ import { homePage } from '../pages/home.js';
 import { initAnnouncementBar } from '../pages/announcement-bar.js';
 import { initNavbar } from './navbar.js';
 import { initSearchOverlay, searchOverlay } from './search-overlay.js';
-import { applyTheme, getStoredTheme, watchSystemTheme } from './theme.js';
+import { initThemeManager, setTheme, subscribeToTheme } from './theme.js';
 import { qs, qsa, setCurrentYear } from './helpers.js';
 
 const mountApp = () => {
@@ -18,31 +18,56 @@ const mountApp = () => {
   initSearchOverlay();
 };
 
+const getThemeIconName = (preference) => {
+  if (preference === 'light') return 'sun';
+  if (preference === 'dark') return 'moon';
+  return 'monitor-cog';
+};
+
 const initThemeControls = () => {
-  const label = qs('[data-theme-label]');
+  const labels = qsa('[data-theme-label]');
+  const iconsTargets = qsa('[data-theme-icon]');
+  const triggers = qsa('[data-theme-trigger]');
   const options = qsa('[data-theme-option]');
 
-  const syncThemeControls = ({ preference }) => {
-    if (label) {
-      label.textContent = preference[0].toUpperCase() + preference.slice(1);
-    }
+  const syncThemeControls = ({ preference, resolvedTheme }) => {
+    const label = preference[0].toUpperCase() + preference.slice(1);
+    const iconName = getThemeIconName(preference);
+
+    labels.forEach((item) => {
+      item.textContent = label;
+    });
+
+    iconsTargets.forEach((target) => {
+      target.innerHTML = `<i data-lucide="${iconName}" aria-hidden="true"></i>`;
+    });
+
+    triggers.forEach((trigger) => {
+      trigger.setAttribute(
+        'aria-label',
+        `Choose color theme. Current theme: ${label}, showing ${resolvedTheme}.`,
+      );
+      trigger.setAttribute('aria-pressed', String(preference !== 'system'));
+    });
 
     options.forEach((option) => {
-      option.setAttribute('aria-checked', String(option.dataset.themeOption === preference));
+      const isActive = option.dataset.themeOption === preference;
+      option.setAttribute('aria-checked', String(isActive));
+      option.tabIndex = isActive ? 0 : -1;
     });
+
+    createIcons({ icons });
   };
 
-  syncThemeControls(applyTheme(getStoredTheme()));
+  syncThemeControls(initThemeManager());
 
   options.forEach((option) => {
     option.addEventListener('click', () => {
-      syncThemeControls(applyTheme(option.dataset.themeOption));
+      syncThemeControls(setTheme(option.dataset.themeOption));
     });
   });
 
-  watchSystemTheme(() => {
-    if (getStoredTheme() === 'system') syncThemeControls(applyTheme('system'));
-  });
+  subscribeToTheme(syncThemeControls);
 };
 
 const initSmoothScroll = () => {

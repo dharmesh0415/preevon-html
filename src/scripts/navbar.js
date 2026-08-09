@@ -13,7 +13,7 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
-const createDisclosure = ({ root, triggerSelector, panelSelector, openClass }) => {
+const createDisclosure = ({ root, triggerSelector, panelSelector, openClass, onOpen }) => {
   if (!root) return null;
 
   const trigger = qs(triggerSelector, root);
@@ -23,18 +23,62 @@ const createDisclosure = ({ root, triggerSelector, panelSelector, openClass }) =
   const setOpen = (isOpen) => {
     root.classList.toggle(openClass, isOpen);
     trigger.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) onOpen?.();
   };
 
   const close = () => setOpen(false);
   const toggle = () => setOpen(!root.classList.contains(openClass));
 
-  trigger.addEventListener('click', toggle);
+  trigger.addEventListener('click', (event) => {
+    event.stopPropagation();
+    toggle();
+  });
   root.addEventListener('focusout', (event) => {
     if (!root.contains(event.relatedTarget)) close();
   });
+  root.addEventListener('click', (event) => event.stopPropagation());
+  document.addEventListener('click', close);
   document.addEventListener('keydown', closeOnEscape(close));
 
-  return { close };
+  return { close, setOpen };
+};
+
+const initThemeMenus = (navbar) => {
+  qsa('[data-theme-menu]', navbar).forEach((menu) => {
+    const disclosure = createDisclosure({
+      root: menu,
+      triggerSelector: '[data-theme-trigger]',
+      panelSelector: '[data-theme-panel]',
+      openClass: 'is-open',
+      onOpen: () =>
+        qs('[data-theme-option][aria-checked="true"]', menu)?.focus({ preventScroll: true }),
+    });
+    const trigger = qs('[data-theme-trigger]', menu);
+    const options = qsa('[data-theme-option]', menu);
+
+    options.forEach((option, index) => {
+      option.addEventListener('click', () => disclosure?.close());
+      option.addEventListener('keydown', (event) => {
+        const lastIndex = options.length - 1;
+        let nextIndex = null;
+
+        if (event.key === 'ArrowDown') nextIndex = index === lastIndex ? 0 : index + 1;
+        if (event.key === 'ArrowUp') nextIndex = index === 0 ? lastIndex : index - 1;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = lastIndex;
+
+        if (nextIndex !== null) {
+          event.preventDefault();
+          options[nextIndex].focus();
+        }
+
+        if (event.key === 'Escape') {
+          disclosure?.close();
+          trigger?.focus({ preventScroll: true });
+        }
+      });
+    });
+  });
 };
 
 export const initNavbar = () => {
@@ -48,12 +92,7 @@ export const initNavbar = () => {
   updateScrolledState();
   window.addEventListener('scroll', updateScrolledState, { passive: true });
 
-  createDisclosure({
-    root: qs('[data-theme-menu]', navbar),
-    triggerSelector: '[data-theme-trigger]',
-    panelSelector: '[data-theme-panel]',
-    openClass: 'is-open',
-  });
+  initThemeMenus(navbar);
 
   createDisclosure({
     root: qs('[data-pages-menu]', navbar),
