@@ -1,94 +1,119 @@
-const footerGroups = [
-  {
-    title: 'Product',
+const footerNavigation = {
+  product: {
+    heading: 'Product',
     links: [
-      ['Features', '#features'],
-      ['Solutions', '#solutions'],
-      ['Pricing', '#pricing'],
-      ['Integrations', '#integrations'],
+      { label: 'Features', href: '#features' },
+      { label: 'AI Workflow', href: '#ai-workflow' },
+      { label: 'Integrations', href: '#integrations' },
+      { label: 'Pricing', href: '#pricing' },
+      { label: 'Dashboard', href: '#dashboard' },
+      { label: 'Changelog', href: '#changelog' },
     ],
   },
-  {
-    title: 'Company',
+  solutions: {
+    heading: 'Solutions',
     links: [
-      ['About', '#about'],
-      ['Blog', '#blog'],
-      ['Careers', '#careers'],
-      ['Contact', '#contact'],
+      { label: 'AI Automation', href: '#ai-automation' },
+      { label: 'AI Agents', href: '#ai-agents' },
+      { label: 'Workflow Automation', href: '#workflow-automation' },
+      { label: 'Team Collaboration', href: '#team-collaboration' },
+      { label: 'Analytics', href: '#analytics' },
+      { label: 'Business Intelligence', href: '#business-intelligence' },
     ],
   },
-  {
-    title: 'Resources',
+  resources: {
+    heading: 'Resources',
     links: [
-      ['Documentation', '#documentation'],
-      ['Support Center', '#support-center'],
-      ['Changelog', '#changelog'],
-      ['Privacy Policy', '#privacy-policy'],
+      { label: 'Documentation', href: '#documentation' },
+      { label: 'Blog', href: '#blog' },
+      { label: 'Support Center', href: '#support-center' },
+      { label: 'Community', href: '#community' },
+      { label: 'Help Center', href: '#help-center' },
+      { label: 'API Reference', href: '#api-reference' },
     ],
   },
-];
+  company: {
+    heading: 'Company',
+    links: [
+      { label: 'About', href: '#about' },
+      { label: 'Careers', href: '#careers' },
+      { label: 'Contact', href: '#contact' },
+      { label: 'Privacy Policy', href: '#privacy-policy' },
+      { label: 'Terms & Conditions', href: '#terms' },
+    ],
+  },
+};
 
 const socialLinks = [
-  ['Twitter / X', 'twitter'],
-  ['LinkedIn', 'linkedin'],
-  ['GitHub', 'github'],
+  { label: 'X / Twitter', href: '#', text: 'X' },
+  { label: 'LinkedIn', href: '#', icon: 'linkedin' },
+  { label: 'GitHub', href: '#', icon: 'github' },
+  { label: 'YouTube', href: '#', icon: 'youtube' },
 ];
 
-const logo = () => `
-  <a class="premium-navbar__logo site-footer__logo" href="#main-content" aria-label="Preevon home">
-    <span class="premium-navbar__mark" aria-hidden="true">P</span>
-    <span>Preevon</span>
-  </a>
+const renderFooterGroup = ([key, group]) => `
+  <section class="site-footer__group" aria-labelledby="footer-${key}-heading">
+    <button class="site-footer__group-toggle" type="button" aria-expanded="false" aria-controls="footer-${key}-links" data-footer-toggle>
+      <span id="footer-${key}-heading">${group.heading}</span>
+      <i data-lucide="chevron-down" aria-hidden="true"></i>
+    </button>
+    <ul class="site-footer__links" id="footer-${key}-links" data-footer-panel>
+      ${group.links.map((link) => `<li><a href="${link.href}">${link.label}</a></li>`).join('')}
+    </ul>
+  </section>
 `;
 
 export const footer = () => `
-  <footer class="site-footer" aria-labelledby="site-footer-title">
-    <div class="site-footer__inner">
-      <div class="site-footer__brand">
-        ${logo()}
-        <h2 id="site-footer-title" class="sr-only">Preevon footer</h2>
-        <p>AI SaaS workflows, polished interfaces, and scalable product foundations for modern teams.</p>
-        <div class="site-footer__social" aria-label="Social links">
-          ${socialLinks
-            .map(
-              ([label, icon]) => `
-                <a href="#${label.toLowerCase().replaceAll(' / ', '-').replaceAll(' ', '-')}" aria-label="${label}">
-                  <i data-lucide="${icon}" aria-hidden="true"></i>
-                </a>
-              `,
-            )
-            .join('')}
-        </div>
+  <footer class="site-footer" aria-labelledby="site-footer-title" data-animate="float-in">
+    <div class="site-footer__glow" aria-hidden="true"></div>
+    <div class="container site-footer__inner">
+      <div class="site-footer__top">
+        <section class="site-footer__brand" aria-labelledby="site-footer-title">
+          <a class="premium-navbar__logo site-footer__logo" href="#main-content" aria-label="Preevon home">
+            <span class="premium-navbar__mark" aria-hidden="true">P</span>
+            <span id="site-footer-title">Preevon</span>
+          </a>
+          <p>Build smarter products, automate workflows, and scale your business with intelligent AI-powered tools.</p>
+          <p class="site-footer__trust"><i data-lucide="shield-check" aria-hidden="true"></i>Built for modern teams building with AI.</p>
+          <div class="site-footer__social" aria-label="Social links">
+            ${socialLinks
+              .map(
+                (link) => `
+                  <a class="site-footer__social-link" href="${link.href}" aria-label="${link.label}">
+                    ${link.icon ? `<i data-lucide="${link.icon}" aria-hidden="true"></i>` : `<span aria-hidden="true">${link.text}</span>`}
+                  </a>
+                `,
+              )
+              .join('')}
+          </div>
+        </section>
+
+        <section class="site-footer__newsletter" aria-labelledby="footer-newsletter-heading">
+          <span class="eyebrow">Newsletter</span>
+          <h2 id="footer-newsletter-heading">Stay ahead with AI.</h2>
+          <p>Get product updates, AI insights, and useful resources delivered to your inbox.</p>
+          <form class="site-footer__form" novalidate data-newsletter-form>
+            <label class="sr-only" for="footer-email">Email address</label>
+            <div class="site-footer__field">
+              <input id="footer-email" name="email" type="email" placeholder="Enter your email" autocomplete="email" aria-describedby="footer-newsletter-message" data-newsletter-email />
+              <button type="submit">Subscribe</button>
+            </div>
+            <p class="site-footer__message" id="footer-newsletter-message" aria-live="polite" data-newsletter-message></p>
+          </form>
+        </section>
       </div>
 
       <nav class="site-footer__nav" aria-label="Footer navigation">
-        ${footerGroups
-          .map(
-            (group) => `
-              <div class="site-footer__group">
-                <h2>${group.title}</h2>
-                <ul>
-                  ${group.links.map(([label, href]) => `<li><a href="${href}">${label}</a></li>`).join('')}
-                </ul>
-              </div>
-            `,
-          )
-          .join('')}
+        ${Object.entries(footerNavigation).map(renderFooterGroup).join('')}
       </nav>
 
-      <form class="site-footer__newsletter" aria-label="Newsletter signup">
-        <h2>Stay in the loop</h2>
-        <p>Get layout updates, release notes, and product news from Preevon.</p>
-        <div class="site-footer__form-row">
-          <label class="sr-only" for="footer-email">Email address</label>
-          <input id="footer-email" type="email" placeholder="you@example.com" autocomplete="email" />
-          <button type="submit">Subscribe</button>
-        </div>
-      </form>
-
       <div class="site-footer__bottom">
-        <span>© <span data-current-year></span> Preevon. All rights reserved.</span>
-        <a href="#terms">Terms</a>
+        <p>© <span data-current-year>2026</span> Preevon. All rights reserved.</p>
+        <nav class="site-footer__legal" aria-label="Legal navigation">
+          <a href="#privacy-policy">Privacy</a>
+          <a href="#terms">Terms</a>
+          <a href="#cookies">Cookies</a>
+        </nav>
       </div>
     </div>
   </footer>
