@@ -1,5 +1,6 @@
 import { announcementBar } from './announcement-bar.js';
 import { navbar } from './navbar.js';
+import { footer } from './footer.js';
 
 export const homePage = () => `
   ${announcementBar()}
@@ -24,4 +25,5 @@ export const homePage = () => `
       </div>
     </section>
   </main>
+  ${footer()}
 `;

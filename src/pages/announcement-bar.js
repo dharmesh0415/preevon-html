@@ -42,7 +42,12 @@ export const initAnnouncementBar = () => {
 
   if (!bar || !close) return;
 
+  const markDismissed = () => {
+    document.documentElement.classList.add('announcement-is-dismissed');
+  };
+
   if (window.localStorage.getItem(ANNOUNCEMENT_STORAGE_KEY) === 'true') {
+    markDismissed();
     bar.remove();
     return;
   }
@@ -57,6 +62,7 @@ export const initAnnouncementBar = () => {
     bar.dataset.visible = 'false';
     bar.dataset.dismissed = 'true';
 
+    markDismissed();
     bar.addEventListener('transitionend', () => bar.remove(), { once: true });
   });
 };
