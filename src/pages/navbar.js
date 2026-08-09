@@ -20,6 +20,30 @@ const pageLinks = [
   ['Coming Soon', 'Preview upcoming launches'],
 ];
 
+const themeMenu = (variant = 'desktop') => `
+  <div class="theme-switcher theme-switcher--${variant}" data-theme-menu>
+    <button class="theme-switcher__trigger" type="button" aria-label="Choose color theme" aria-haspopup="menu" aria-expanded="false" aria-pressed="false" data-theme-trigger>
+      <span class="theme-switcher__icon" data-theme-icon aria-hidden="true"><i data-lucide="monitor-cog"></i></span>
+      <span class="theme-switcher__label" data-theme-label>System</span>
+      <i class="theme-switcher__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+    </button>
+    <div class="theme-switcher__panel" role="menu" aria-label="Color theme" data-theme-panel>
+      ${['light', 'dark', 'system']
+        .map((theme) => {
+          const icon = theme === 'light' ? 'sun' : theme === 'dark' ? 'moon' : 'monitor-cog';
+          return `
+            <button class="theme-switcher__option" type="button" role="menuitemradio" aria-checked="false" data-theme-option="${theme}">
+              <span class="theme-switcher__option-icon"><i data-lucide="${icon}" aria-hidden="true"></i></span>
+              <span>${theme[0].toUpperCase() + theme.slice(1)}</span>
+              <i class="theme-switcher__check" data-lucide="check" aria-hidden="true"></i>
+            </button>
+          `;
+        })
+        .join('')}
+    </div>
+  </div>
+`;
+
 const slugify = (value) => value.toLowerCase().replaceAll(' ', '-');
 
 const pagesMenuItems = () =>
@@ -75,24 +99,7 @@ export const navbar = () => `
           <span>Search</span>
           <kbd>⌘K</kbd>
         </button>
-        <div class="theme-switcher" data-theme-menu>
-          <button class="theme-switcher__trigger" type="button" aria-label="Choose color theme" aria-haspopup="true" aria-expanded="false" data-theme-trigger>
-            <i data-lucide="sun-moon" aria-hidden="true"></i>
-            <span data-theme-label>System</span>
-          </button>
-          <div class="theme-switcher__panel" role="menu" data-theme-panel>
-            ${['light', 'dark', 'system']
-              .map(
-                (theme) => `
-                  <button class="theme-switcher__option" type="button" role="menuitemradio" aria-checked="false" data-theme-option="${theme}">
-                    <span>${theme[0].toUpperCase() + theme.slice(1)}</span>
-                    <i data-lucide="check" aria-hidden="true"></i>
-                  </button>
-                `,
-              )
-              .join('')}
-          </div>
-        </div>
+        ${themeMenu()}
         <a class="premium-navbar__login" href="#login">Login</a>
         <a class="premium-navbar__cta" href="#get-started">Get Started</a>
         <button class="premium-navbar__hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-navigation" data-mobile-open>
@@ -120,6 +127,7 @@ export const navbar = () => `
                 `<a href="${link.href}" ${link.active ? 'aria-current="page"' : ''}>${link.label}</a>`,
             )
             .join('')}
+          ${themeMenu('mobile')}
           <div class="mobile-nav__details">
             <button class="mobile-nav__pages-trigger" type="button" aria-expanded="false" aria-controls="mobile-pages-submenu" data-mobile-pages-trigger>
               <span>Pages</span>
