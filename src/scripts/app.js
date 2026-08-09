@@ -87,12 +87,59 @@ const initSmoothScroll = () => {
 };
 
 const initAnimations = () => {
-  gsap.from('[data-animate="float-in"]', {
-    autoAlpha: 0,
-    y: 24,
-    duration: 0.9,
-    ease: 'power3.out',
-  });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const heroItems = qsa('[data-hero-animate]');
+  const heroProduct = qs('[data-hero-product]');
+
+  if (reduceMotion) {
+    gsap.set([...heroItems, heroProduct].filter(Boolean), {
+      autoAlpha: 1,
+      clearProps: 'transform',
+    });
+    return;
+  }
+
+  if (heroItems.length) {
+    gsap.from(heroItems, {
+      autoAlpha: 0,
+      y: 22,
+      duration: 0.75,
+      stagger: 0.09,
+      ease: 'power3.out',
+    });
+  }
+
+  if (heroProduct) {
+    gsap.from(heroProduct, {
+      autoAlpha: 0,
+      x: 34,
+      y: 18,
+      duration: 0.9,
+      delay: 0.18,
+      ease: 'power3.out',
+    });
+
+    gsap.to(heroProduct, {
+      y: -8,
+      duration: 4.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      heroProduct.addEventListener('pointermove', (event) => {
+        const bounds = heroProduct.getBoundingClientRect();
+        const rotateY = ((event.clientX - bounds.left) / bounds.width - 0.5) * 6;
+        const rotateX = -((event.clientY - bounds.top) / bounds.height - 0.5) * 5;
+        gsap.to(heroProduct, { rotateX, rotateY, duration: 0.35, ease: 'power2.out' });
+      });
+
+      heroProduct.addEventListener('pointerleave', () => {
+        gsap.to(heroProduct, { rotateX: 0, rotateY: 0, duration: 0.45, ease: 'power2.out' });
+      });
+    }
+  }
 };
 
 mountApp();
