@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { createIcons, icons } from 'lucide';
 import '../styles/app.css';
 import { homePage } from '../pages/home.js';
+import { initFooter } from './footer.js';
 import { initAnnouncementBar } from '../pages/announcement-bar.js';
 import { initNavbar } from './navbar.js';
 import { initSearchOverlay, searchOverlay } from './search-overlay.js';
@@ -16,6 +17,7 @@ const mountApp = () => {
   initAnnouncementBar();
   initNavbar();
   initSearchOverlay();
+  initFooter();
 };
 
 const getThemeIconName = (preference) => {
