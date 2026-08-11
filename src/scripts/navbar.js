@@ -104,67 +104,71 @@ export const initNavbar = () => {
   const mobileMenu = qs('[data-mobile-menu]', navbar);
   const openButton = qs('[data-mobile-open]', navbar);
   const closeButtons = qsa('[data-mobile-close]', navbar);
-  const pagesTrigger = qs('[data-mobile-pages-trigger]', navbar);
-  const pagesPanel = qs('[data-mobile-pages-panel]', navbar);
-  let pagesAnimationTimer;
-
-  const setMobilePagesOpen = (isOpen) => {
-    if (!pagesTrigger || !pagesPanel) return;
-
-    window.clearTimeout(pagesAnimationTimer);
-    pagesTrigger.setAttribute('aria-expanded', String(isOpen));
-
-    if (isOpen) {
-      pagesPanel.hidden = false;
-      pagesPanel.style.maxHeight = `${pagesPanel.scrollHeight}px`;
-      return;
-    }
-
-    pagesPanel.style.maxHeight = '0px';
-    pagesAnimationTimer = window.setTimeout(() => {
-      pagesPanel.hidden = true;
-    }, 260);
-  };
 
   const lockMobileScroll = () => lockBodyScroll('mobile-nav');
 
   const unlockMobileScroll = () => unlockBodyScroll('mobile-nav');
 
   const focusFirstPanelControl = () => {
-    qs('[data-mobile-close]', mobileMenu)?.focus({ preventScroll: true });
+    qs('[data-mobile-close]', mobileMenu)?.focus({
+      preventScroll: true,
+    });
   };
 
   const setMobileOpen = (isOpen) => {
     if (!mobileMenu || !openButton) return;
 
     const wasOpen = navbar.classList.contains('is-mobile-open');
+
     if (isOpen === wasOpen) return;
 
     navbar.classList.toggle('is-mobile-open', isOpen);
-    mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+
+    mobileMenu.setAttribute(
+      'aria-hidden',
+      String(!isOpen)
+    );
+
     mobileMenu.toggleAttribute('inert', !isOpen);
-    openButton.setAttribute('aria-expanded', String(isOpen));
+
+    openButton.setAttribute(
+      'aria-expanded',
+      String(isOpen)
+    );
 
     if (isOpen) {
       lockMobileScroll();
-      requestAnimationFrame(focusFirstPanelControl);
+
+      requestAnimationFrame(() => {
+        focusFirstPanelControl();
+      });
+
       return;
     }
 
-    setMobilePagesOpen(false);
     unlockMobileScroll();
-    openButton.focus({ preventScroll: true });
+
+    openButton.focus({
+      preventScroll: true,
+    });
   };
 
-  openButton?.addEventListener('click', () => setMobileOpen(true));
-  closeButtons.forEach((button) => button.addEventListener('click', () => setMobileOpen(false)));
-  pagesTrigger?.addEventListener('click', () => {
-    const isOpen = pagesTrigger.getAttribute('aria-expanded') === 'true';
-    setMobilePagesOpen(!isOpen);
+  openButton?.addEventListener('click', () => {
+    setMobileOpen(true);
   });
-  qsa('.mobile-nav a', navbar).forEach((control) =>
-    control.addEventListener('click', () => setMobileOpen(false)),
-  );
+
+  closeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      setMobileOpen(false);
+    });
+  });
+
+  qsa('.mobile-nav a', navbar).forEach((control) => {
+    control.addEventListener('click', () => {
+      setMobileOpen(false);
+    });
+  });
+
   document.addEventListener('keydown', (event) => {
     if (!navbar.classList.contains('is-mobile-open')) return;
 
@@ -175,22 +179,42 @@ export const initNavbar = () => {
 
     if (event.key !== 'Tab' || !mobileMenu) return;
 
-    const focusableItems = qsa(focusableSelector, mobileMenu).filter(
-      (item) => !item.closest('[hidden]'),
+    const focusableItems = qsa(
+      focusableSelector,
+      mobileMenu
+    ).filter(
+      (item) => !item.closest('[hidden]')
     );
+
     const firstItem = focusableItems[0];
     const lastItem = focusableItems.at(-1);
 
     if (!firstItem || !lastItem) return;
 
-    if (event.shiftKey && document.activeElement === firstItem) {
+    if (
+      event.shiftKey &&
+      document.activeElement === firstItem
+    ) {
       event.preventDefault();
       lastItem.focus();
     }
 
-    if (!event.shiftKey && document.activeElement === lastItem) {
+    if (
+      !event.shiftKey &&
+      document.activeElement === lastItem
+    ) {
       event.preventDefault();
       firstItem.focus();
     }
   });
+
+  const handleResize = () => {
+    if (window.innerWidth >= 1080) {
+      setMobileOpen(false);
+    }
+  };
+
+  window.addEventListener('resize', handleResize);
+  handleResize();
 };
+

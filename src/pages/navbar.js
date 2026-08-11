@@ -102,48 +102,81 @@ export const navbar = () => `
         ${themeMenu()}
         <a class="premium-navbar__login" href="#login">Login</a>
         <a class="premium-navbar__cta" href="#get-started">Get Started</a>
-        <button class="premium-navbar__hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-navigation" data-mobile-open>
-          <span></span><span></span><span></span>
+        <button
+          class="premium-navbar__hamburger"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-navigation"
+          data-mobile-open
+        >
+          <i data-lucide="menu" aria-hidden="true"></i>
         </button>
       </div>
     </nav>
 
-    <div class="mobile-nav" id="mobile-navigation" aria-hidden="true" inert data-mobile-menu>
-      <button class="mobile-nav__overlay" type="button" aria-label="Close menu" data-mobile-close></button>
+    <div
+      class="mobile-nav"
+      id="mobile-navigation"
+      aria-hidden="true"
+      inert
+      data-mobile-menu
+    >
+      <button
+        class="mobile-nav__overlay"
+        type="button"
+        aria-label="Close menu"
+        data-mobile-close
+      ></button>
+
       <aside class="mobile-nav__panel" aria-label="Mobile navigation">
+
         <div class="mobile-nav__header">
-          <span class="premium-navbar__logo"><span class="premium-navbar__mark" aria-hidden="true">P</span><span>Preevon</span></span>
-          <button class="mobile-nav__close" type="button" aria-label="Close menu" data-mobile-close><i data-lucide="x" aria-hidden="true"></i></button>
+          <a class="premium-navbar__logo" href="#main-content">
+            <span class="premium-navbar__mark" aria-hidden="true">P</span>
+            <span>Preevon</span>
+          </a>
+
+          <button
+            class="mobile-nav__close"
+            type="button"
+            aria-label="Close menu"
+            data-mobile-close
+          >
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
         </div>
+
         <div class="mobile-nav__links">
           <button class="mobile-nav__search" type="button" data-search-trigger>
             <span><i data-lucide="search" aria-hidden="true"></i> Search Preevon</span>
             <kbd>⌘K</kbd>
           </button>
           ${navLinks
-            .slice(0, 4)
             .map(
-              (link) =>
-                `<a href="${link.href}" ${link.active ? 'aria-current="page"' : ''}>${link.label}</a>`,
+              (link) => `
+                <a
+                  href="${link.href}"
+                  ${link.active ? 'aria-current="page"' : ''}
+                >
+                  ${link.label}
+                </a>
+              `,
             )
             .join('')}
-          ${themeMenu('mobile')}
-          <div class="mobile-nav__details">
-            <button class="mobile-nav__pages-trigger" type="button" aria-expanded="false" aria-controls="mobile-pages-submenu" data-mobile-pages-trigger>
-              <span>Pages</span>
-              <i data-lucide="chevron-down" aria-hidden="true"></i>
-            </button>
-            <div class="mobile-nav__subnav" id="mobile-pages-submenu" hidden data-mobile-pages-panel>${pagesMenuItems()}</div>
-          </div>
-          ${navLinks
-            .slice(4)
-            .map((link) => `<a href="${link.href}">${link.label}</a>`)
-            .join('')}
+
         </div>
+
         <div class="mobile-nav__footer">
-          <a class="premium-navbar__login" href="#login">Login</a>
-          <a class="premium-navbar__cta" href="#get-started">Get Started</a>
+          <a class="premium-navbar__login" href="#login">
+            Login
+          </a>
+
+          <a class="premium-navbar__cta" href="#get-started">
+            Get Started
+          </a>
         </div>
+
       </aside>
     </div>
   </header>
