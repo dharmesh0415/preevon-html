@@ -2,6 +2,34 @@ import { announcementBar } from './announcement-bar.js';
 import { navbar } from './navbar.js';
 import { footer } from './footer.js';
 
+const trustedCompanies = [
+  { name: 'Northstar', mark: 'star', tone: 'northstar' },
+  { name: 'Orbit Labs', mark: 'orbit', tone: 'orbit' },
+  { name: 'Vertex', mark: 'triangle', tone: 'vertex' },
+  { name: 'Nova Systems', mark: 'spark', tone: 'nova' },
+  { name: 'Elevate', mark: 'chevron', tone: 'elevate' },
+  { name: 'Flux', mark: 'wave', tone: 'flux' },
+];
+
+const companyLogo = ({ name, mark, tone }) => `
+  <li class="trusted-by__logo" data-trusted-logo style="--logo-tone: var(--trusted-tone-${tone});">
+    <span class="trusted-by__mark trusted-by__mark--${mark}" aria-hidden="true"></span>
+    <span class="trusted-by__name">${name}</span>
+  </li>
+`;
+
+const trustedBySection = () => `
+  <section class="trusted-by" aria-labelledby="trusted-by-title" data-trusted-by>
+    <div class="container trusted-by__inner">
+      <h2 class="trusted-by__eyebrow" id="trusted-by-title" data-trusted-animate>Trusted by teams building the future with AI</h2>
+      <ul class="trusted-by__logos" aria-label="Illustrative demo brands">
+        ${trustedCompanies.map(companyLogo).join('')}
+      </ul>
+      <p class="trusted-by__microcopy" data-trusted-animate><span aria-hidden="true"></span>AI-first workflows • Secure by design • Built to scale</p>
+    </div>
+  </section>
+`;
+
 const dashboardNav = [
   ['Overview', 'layout-dashboard'],
   ['AI Assistant', 'sparkles'],
@@ -120,6 +148,7 @@ export const homePage = () => `
         ${dashboardPreview()}
       </div>
     </section>
+    ${trustedBySection()}
   </main>
   ${footer()}
 `;

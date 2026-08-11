@@ -90,9 +90,10 @@ const initAnimations = () => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const heroItems = qsa('[data-hero-animate]');
   const heroProduct = qs('[data-hero-product]');
+  const trustedItems = qsa('[data-trusted-animate], [data-trusted-logo]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -105,6 +106,17 @@ const initAnimations = () => {
       y: 22,
       duration: 0.75,
       stagger: 0.09,
+      ease: 'power3.out',
+    });
+  }
+
+  if (trustedItems.length) {
+    gsap.from(trustedItems, {
+      autoAlpha: 0,
+      y: 14,
+      duration: 0.6,
+      stagger: 0.055,
+      delay: 0.28,
       ease: 'power3.out',
     });
   }
