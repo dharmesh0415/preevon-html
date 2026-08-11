@@ -30,6 +30,114 @@ const trustedBySection = () => `
   </section>
 `;
 
+
+const featureItems = [
+  {
+    icon: 'sparkles',
+    title: 'AI Workspace',
+    description: 'Work with intelligent AI tools designed to help your team think, create, and execute faster.',
+    featured: true,
+    visual: 'ai',
+  },
+  {
+    icon: 'workflow',
+    title: 'Smart Automation',
+    description: 'Automate repetitive processes and let intelligent workflows handle the work for you.',
+    featured: false,
+  },
+  {
+    icon: 'bot',
+    title: 'AI Agents',
+    description: 'Deploy specialized AI agents that can reason, act, and complete tasks across your workflows.',
+    featured: false,
+  },
+  {
+    icon: 'chart-no-axes-combined',
+    title: 'Intelligent Analytics',
+    description: 'Turn business activity into actionable insights with real-time analytics and intelligent reporting.',
+    featured: false,
+  },
+  {
+    icon: 'plug',
+    title: 'Seamless Integrations',
+    description: 'Connect the tools your team already uses and bring your entire workflow into one place.',
+    featured: false,
+  },
+  {
+    icon: 'users-round',
+    title: 'Team Collaboration',
+    description: 'Keep people, AI, workflows, and important business context aligned in one shared workspace.',
+    featured: true,
+    visual: 'workflow',
+  },
+];
+
+const aiWorkspacePreview = () => `
+  <div class="feature-preview feature-preview--ai" aria-hidden="true" data-feature-visual>
+    <div class="feature-preview__toolbar"><span></span><span></span><span></span></div>
+    <div class="ai-thread">
+      <div class="ai-thread__message ai-thread__message--user">
+        <span>User</span>
+        <p>Summarize this week's workflow performance.</p>
+      </div>
+      <div class="ai-thread__message ai-thread__message--ai">
+        <span>AI</span>
+        <p>Your team's workflow efficiency improved this week. Three processes are ready for further automation.</p>
+      </div>
+    </div>
+  </div>
+`;
+
+const workflowPreview = () => `
+  <div class="feature-preview feature-preview--workflow" aria-hidden="true" data-feature-visual>
+    ${['Trigger', 'AI Agent', 'Analyze', 'Action']
+      .map(
+        (node, index) => `
+          <div class="workflow-preview__step ${index === 1 ? 'is-active' : ''}">
+            <span>${String(index + 1).padStart(2, '0')}</span>
+            <strong>${node}</strong>
+          </div>
+        `,
+      )
+      .join('')}
+  </div>
+`;
+
+const featureVisuals = {
+  ai: aiWorkspacePreview,
+  workflow: workflowPreview,
+};
+
+const featureCard = (feature, index) => `
+  <article class="feature-card ${feature.featured ? 'feature-card--featured' : ''}" data-feature-card style="--feature-index: ${index};">
+    <div class="feature-card__content">
+      <div class="feature-card__icon" aria-hidden="true"><i data-lucide="${feature.icon}"></i></div>
+      <div class="feature-card__copy">
+        <h3>${feature.title}</h3>
+        <p>${feature.description}</p>
+      </div>
+      <span class="feature-card__indicator" aria-hidden="true">Explore <i data-lucide="arrow-up-right"></i></span>
+    </div>
+    ${feature.visual ? featureVisuals[feature.visual]() : '<span class="feature-card__decor" aria-hidden="true"></span>'}
+  </article>
+`;
+
+const featuresSection = () => `
+  <section class="features-section" id="features" aria-labelledby="features-title" data-features-section>
+    <div class="features-section__background" aria-hidden="true"><span></span><span></span></div>
+    <div class="container features-section__inner">
+      <div class="features-section__header">
+        <p class="features-section__eyebrow" data-features-animate>Powerful by design</p>
+        <h2 id="features-title" data-features-animate>Everything you need to build smarter with AI.</h2>
+        <p data-features-animate>Bring intelligent automation, AI-powered workflows, analytics, and collaboration together in one powerful workspace.</p>
+      </div>
+      <div class="features-grid">
+        ${featureItems.map(featureCard).join('')}
+      </div>
+    </div>
+  </section>
+`;
+
 const dashboardNav = [
   ['Overview', 'layout-dashboard'],
   ['AI Assistant', 'sparkles'],
@@ -149,6 +257,7 @@ export const homePage = () => `
       </div>
     </section>
     ${trustedBySection()}
+    ${featuresSection()}
   </main>
   ${footer()}
 `;

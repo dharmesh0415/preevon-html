@@ -91,9 +91,10 @@ const initAnimations = () => {
   const heroItems = qsa('[data-hero-animate]');
   const heroProduct = qs('[data-hero-product]');
   const trustedItems = qsa('[data-trusted-animate], [data-trusted-logo]');
+  const featureItems = qsa('[data-features-animate], [data-feature-card], [data-feature-visual]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct, ...trustedItems].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -117,6 +118,17 @@ const initAnimations = () => {
       duration: 0.6,
       stagger: 0.055,
       delay: 0.28,
+      ease: 'power3.out',
+    });
+  }
+
+  if (featureItems.length) {
+    gsap.from(featureItems, {
+      autoAlpha: 0,
+      y: 18,
+      duration: 0.65,
+      stagger: 0.06,
+      delay: 0.4,
       ease: 'power3.out',
     });
   }
