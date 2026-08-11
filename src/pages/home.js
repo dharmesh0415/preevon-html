@@ -138,6 +138,133 @@ const featuresSection = () => `
   </section>
 `;
 
+
+const workflowSteps = [
+  {
+    number: '01',
+    icon: 'message-square',
+    title: 'Understand',
+    description: 'Bring your request, context, and business data into one intelligent workspace.',
+    preview: 'understand',
+  },
+  {
+    number: '02',
+    icon: 'brain',
+    title: 'Think',
+    description: 'AI interprets context, evaluates information, and determines the best next action.',
+    preview: 'think',
+  },
+  {
+    number: '03',
+    icon: 'workflow',
+    title: 'Automate',
+    description: 'Connect AI decisions to workflows that can trigger actions across your tools.',
+    preview: 'automate',
+  },
+  {
+    number: '04',
+    icon: 'check-circle-2',
+    title: 'Deliver',
+    description: 'Complete the action and surface the result where your team needs it.',
+    preview: 'deliver',
+  },
+];
+
+const understandPreview = () => `
+  <div class="ai-workflow-preview ai-workflow-preview--understand" aria-hidden="true">
+    <div class="workflow-prompt-card">
+      <span>User input</span>
+      <p>Analyze this week's sales performance and identify opportunities.</p>
+    </div>
+    <div class="workflow-signal-row">
+      <span>Analytics</span><span>CRM</span><span>Documents</span>
+    </div>
+  </div>
+`;
+
+const thinkPreview = () => `
+  <div class="ai-workflow-preview ai-workflow-preview--think" aria-hidden="true">
+    <div class="workflow-ai-card">
+      <div><i data-lucide="sparkles"></i><strong>AI Insight</strong></div>
+      <p>Analyzing trends, workflow history, and available data...</p>
+      <span class="workflow-progress"><i></i></span>
+    </div>
+    <div class="workflow-context-chips"><span>Context</span><span>Intent</span><span>Action</span></div>
+  </div>
+`;
+
+const automatePreview = () => `
+  <div class="ai-workflow-preview ai-workflow-preview--automate" aria-hidden="true">
+    ${['AI Decision', 'Create Task', 'Notify Team']
+      .map(
+        (node, index) => `
+          <div class="workflow-node ${index === 0 ? 'is-primary' : ''}">
+            <span>${String(index + 1).padStart(2, '0')}</span><strong>${node}</strong>
+          </div>
+        `,
+      )
+      .join('')}
+  </div>
+`;
+
+const deliverPreview = () => `
+  <div class="ai-workflow-preview ai-workflow-preview--deliver" aria-hidden="true">
+    <div class="workflow-result-card">
+      <div><i data-lucide="check-circle-2"></i><strong>Workflow completed</strong></div>
+      <span>3 tasks created</span>
+      <span>Team notified</span>
+    </div>
+  </div>
+`;
+
+const workflowPreviews = {
+  understand: understandPreview,
+  think: thinkPreview,
+  automate: automatePreview,
+  deliver: deliverPreview,
+};
+
+const workflowConnector = (index) => `
+  <div class="ai-workflow-connector" aria-hidden="true" data-workflow-connector style="--connector-index: ${index};">
+    <span></span><i data-lucide="arrow-right"></i>
+  </div>
+`;
+
+const workflowStep = (step, index) => `
+  <article class="ai-workflow-card" data-workflow-card style="--workflow-index: ${index};">
+    <div class="ai-workflow-card__topline">
+      <span>${step.number}</span>
+      <div class="ai-workflow-card__icon" aria-hidden="true"><i data-lucide="${step.icon}"></i></div>
+    </div>
+    <div class="ai-workflow-card__copy">
+      <h3>${step.title}</h3>
+      <p>${step.description}</p>
+    </div>
+    ${workflowPreviews[step.preview]()}
+  </article>
+`;
+
+const aiWorkflowSection = () => `
+  <section class="ai-workflow-section" id="ai-workflow" aria-labelledby="ai-workflow-title" data-ai-workflow-section>
+    <div class="ai-workflow-section__background" aria-hidden="true"><span></span><span></span></div>
+    <div class="container ai-workflow-section__inner">
+      <div class="ai-workflow-section__header">
+        <p class="ai-workflow-section__eyebrow" data-workflow-animate>AI Workflow</p>
+        <h2 id="ai-workflow-title" data-workflow-animate>Turn ideas into intelligent actions.</h2>
+        <p data-workflow-animate>Connect your goals, data, and tools into intelligent workflows that understand context, make decisions, and take action.</p>
+      </div>
+      <div class="ai-engine-card" aria-hidden="true" data-workflow-animate>
+        <div><i data-lucide="cpu"></i><strong>Preevon AI</strong></div>
+        <span>Processing workflow</span>
+        <ul><li>Context</li><li>Intent</li><li>Action</li></ul>
+      </div>
+      <div class="ai-workflow-track" aria-label="Preevon AI workflow stages" data-workflow-track>
+        ${workflowSteps.map((step, index) => `${workflowStep(step, index)}${index < workflowSteps.length - 1 ? workflowConnector(index) : ''}`).join('')}
+      </div>
+    </div>
+  </section>
+`;
+
 const dashboardNav = [
   ['Overview', 'layout-dashboard'],
   ['AI Assistant', 'sparkles'],
@@ -258,6 +385,7 @@ export const homePage = () => `
     </section>
     ${trustedBySection()}
     ${featuresSection()}
+    ${aiWorkflowSection()}
   </main>
   ${footer()}
 `;
