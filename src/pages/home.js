@@ -340,6 +340,109 @@ const dashboardPreview = () => `
   </div>
 `;
 
+const dashboardPreviewMetrics = [
+  { label: 'AI Tasks', value: '128', trend: '+12.4%', icon: 'bot' },
+  { label: 'Automations', value: '42', trend: '+8.1%', icon: 'workflow' },
+  { label: 'Success Rate', value: '94.8%', trend: '+3.2%', icon: 'circle-check' },
+  { label: 'Time Saved', value: '18.4h', trend: '+5.6h', icon: 'clock-3' },
+];
+
+const productDashboardNav = [
+  ['Overview', 'layout-dashboard'],
+  ['AI Assistant', 'sparkles'],
+  ['Workflows', 'workflow'],
+  ['Analytics', 'chart-no-axes-combined'],
+  ['Integrations', 'plug'],
+  ['Activity', 'activity'],
+  ['Settings', 'settings'],
+];
+
+const workflowPerformance = [
+  { label: 'Lead routing', value: 86 },
+  { label: 'Approval flow', value: 68 },
+  { label: 'Weekly report', value: 92 },
+];
+
+const recentActivity = [
+  { label: 'AI Agent completed task', time: '2 min ago', icon: 'bot' },
+  { label: 'Workflow automation triggered', time: '8 min ago', icon: 'workflow' },
+  { label: 'Analytics report generated', time: '14 min ago', icon: 'chart-no-axes-combined' },
+  { label: 'New integration connected', time: '21 min ago', icon: 'plug' },
+];
+
+const metricCard = ({ label, value, trend, icon }, index) => `
+  <article class="product-metric-card" data-dashboard-animate style="--dashboard-index: ${index};">
+    <div class="product-metric-card__topline">
+      <span>${label}</span>
+      <i data-lucide="${icon}" aria-hidden="true"></i>
+    </div>
+    <strong>${value}</strong>
+    <small><i data-lucide="trending-up" aria-hidden="true"></i>${trend} demo</small>
+  </article>
+`;
+
+const dashboardPreviewSection = () => `
+  <section class="dashboard-showcase-section" id="dashboard-preview" aria-labelledby="dashboard-preview-title" data-dashboard-section>
+    <div class="dashboard-showcase-section__background" aria-hidden="true"><span></span><span></span></div>
+    <div class="container dashboard-showcase-section__inner">
+      <div class="dashboard-showcase-section__header">
+        <p class="dashboard-showcase-section__eyebrow" data-dashboard-animate>Your AI command center</p>
+        <h2 id="dashboard-preview-title" data-dashboard-animate>See everything. Control everything. Build smarter.</h2>
+        <p data-dashboard-animate>Bring workflows, insights, AI assistance, and connected tools into one powerful workspace designed for modern teams.</p>
+      </div>
+
+      <div class="product-dashboard-frame" data-dashboard-frame data-dashboard-animate aria-label="Fictional Preevon dashboard preview with demo interface data">
+        <div class="product-dashboard-frame__glow" aria-hidden="true"></div>
+        <div class="product-dashboard-frame__chrome" aria-hidden="true"><span></span><span></span><span></span><strong>Demo workspace preview</strong></div>
+        <div class="product-dashboard">
+          <header class="product-dashboard__topbar">
+            <div class="product-dashboard__brand"><span aria-hidden="true">P</span><strong>Preevon</strong><em>Workspace</em></div>
+            <div class="product-dashboard__search"><i data-lucide="search" aria-hidden="true"></i><span>Search workflows, reports, or ask AI</span></div>
+            <div class="product-dashboard__actions" aria-hidden="true"><span><i data-lucide="bell"></i></span><span><i data-lucide="sun-medium"></i></span><strong>AX</strong></div>
+          </header>
+
+          <div class="product-dashboard__body">
+            <aside class="product-dashboard__sidebar" aria-label="Dashboard preview navigation">
+              ${productDashboardNav.map(([label, icon], index) => `<span class="product-dashboard__nav ${index === 0 ? 'is-active' : ''}"><i data-lucide="${icon}" aria-hidden="true"></i><b>${label}</b></span>`).join('')}
+            </aside>
+
+            <main class="product-dashboard__main" aria-label="Fictional dashboard content preview">
+              <div class="product-dashboard__mobile-nav" aria-hidden="true"><i data-lucide="layout-dashboard"></i><span>Overview</span><i data-lucide="chevron-down"></i></div>
+              <div class="product-dashboard__intro">
+                <div><h3>Good morning, Alex</h3><p>Here's what's happening across your workspace.</p></div>
+                <span>Demo UI data</span>
+              </div>
+              <div class="product-dashboard__metrics">${dashboardPreviewMetrics.map(metricCard).join('')}</div>
+              <div class="product-dashboard__grid">
+                <article class="dashboard-widget dashboard-widget--insights" data-dashboard-animate>
+                  <div class="dashboard-widget__heading"><span><i data-lucide="sparkles" aria-hidden="true"></i>AI Insights</span><small>Updated now</small></div>
+                  <h4>Your workflow efficiency is trending upward.</h4>
+                  <p>Preevon AI found faster handoffs in approval and reporting workflows using fictional preview data.</p>
+                  <svg class="insight-line" viewBox="0 0 320 94" role="img" aria-label="Demo trend line moving upward"><path d="M8 74 C 58 70, 72 34, 118 42 S 174 82, 224 38 S 284 24, 312 18" /></svg>
+                </article>
+                <article class="dashboard-widget dashboard-widget--performance" data-dashboard-animate>
+                  <div class="dashboard-widget__heading"><span><i data-lucide="activity" aria-hidden="true"></i>Workflow Performance</span><small>Demo</small></div>
+                  ${workflowPerformance.map(({ label, value }) => `<div class="performance-row"><div><span>${label}</span><strong>${value}%</strong></div><i style="--bar: ${value}%"></i></div>`).join('')}
+                </article>
+                <article class="dashboard-widget dashboard-widget--activity" data-dashboard-animate>
+                  <div class="dashboard-widget__heading"><span><i data-lucide="list-checks" aria-hidden="true"></i>Recent Activity</span><small>Live preview</small></div>
+                  <ul>${recentActivity.map(({ label, time, icon }) => `<li><i data-lucide="${icon}" aria-hidden="true"></i><div><strong>${label}</strong><span>${time}</span></div></li>`).join('')}</ul>
+                </article>
+                <article class="dashboard-widget dashboard-widget--assistant" data-dashboard-animate>
+                  <div class="assistant-status"><span><i data-lucide="sparkles" aria-hidden="true"></i>Preevon AI</span><small><i></i>Ready to help</small></div>
+                  <div class="assistant-message assistant-message--user"><span>User</span><p>Show me which workflows need attention.</p></div>
+                  <div class="assistant-message assistant-message--ai"><span>AI</span><p>2 workflows may need your attention today.</p></div>
+                  <span class="assistant-action">Review workflows <i data-lucide="arrow-right" aria-hidden="true"></i></span>
+                </article>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+`;
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -386,6 +489,7 @@ export const homePage = () => `
     ${trustedBySection()}
     ${featuresSection()}
     ${aiWorkflowSection()}
+    ${dashboardPreviewSection()}
   </main>
   ${footer()}
 `;
