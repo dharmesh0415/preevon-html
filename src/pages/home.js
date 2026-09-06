@@ -443,6 +443,81 @@ const dashboardPreviewSection = () => `
   </section>
 `;
 
+const integrationItems = [
+  {
+    name: 'Slack',
+    descriptor: 'Team communication',
+    icon: 'messages-square',
+    position: 'top-left',
+  },
+  { name: 'Notion', descriptor: 'Knowledge & docs', icon: 'notebook-tabs', position: 'top-right' },
+  { name: 'GitHub', descriptor: 'Development', icon: 'git-branch', position: 'middle-left' },
+  {
+    name: 'Google Drive',
+    descriptor: 'Shared files',
+    icon: 'folder-open',
+    position: 'middle-right',
+  },
+  {
+    name: 'HubSpot',
+    descriptor: 'CRM signals',
+    icon: 'chart-no-axes-combined',
+    position: 'bottom-left',
+  },
+  { name: 'Linear', descriptor: 'Product planning', icon: 'list-todo', position: 'bottom-right' },
+  {
+    name: 'Discord',
+    descriptor: 'Community context',
+    icon: 'message-circle-more',
+    position: 'far-left',
+  },
+  {
+    name: 'Airtable',
+    descriptor: 'Structured data',
+    icon: 'table-properties',
+    position: 'far-right',
+  },
+];
+
+const integrationCard = ({ name, descriptor, icon, position }, index) => `
+  <article class="integration-card integration-card--${position}" data-integrations-animate style="--integration-index: ${index};">
+    <span class="integration-card__icon" aria-hidden="true"><i data-lucide="${icon}"></i></span>
+    <span class="integration-card__copy"><strong>${name}</strong><small>${descriptor}</small></span>
+    ${index === 0 || index === 3 ? '<span class="integration-card__status"><i aria-hidden="true"></i>Workflow ready</span>' : ''}
+  </article>
+`;
+
+const integrationsSection = () => `
+  <section class="integrations-section" id="integrations" aria-labelledby="integrations-title" data-integrations-section>
+    <div class="integrations-section__background" aria-hidden="true"><span></span><span></span></div>
+    <div class="container integrations-section__inner">
+      <div class="integrations-section__header">
+        <p class="integrations-section__eyebrow" data-integrations-animate>Connect your stack</p>
+        <h2 id="integrations-title" data-integrations-animate>Bring your tools together. Let AI do more.</h2>
+        <p data-integrations-animate>Explore how the tools, data sources, and services your team relies on can form intelligent workflows around one AI engine.</p>
+      </div>
+      <div class="integration-ecosystem" aria-label="Illustrative connected workflow ecosystem" data-integrations-animate>
+        <svg class="integration-ecosystem__connectors" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+          <defs><linearGradient id="integration-line" x1="0" x2="1"><stop stop-color="currentColor" stop-opacity=".12"/><stop offset=".5" stop-color="currentColor" stop-opacity=".72"/><stop offset="1" stop-color="currentColor" stop-opacity=".12"/></linearGradient></defs>
+          <path d="M260 110 L500 310 L740 110 M180 310 H500 H820 M260 510 L500 310 L740 510" />
+          <circle cx="380" cy="230" r="4" class="integration-ecosystem__pulse" />
+        </svg>
+        <div class="integration-ecosystem__label integration-ecosystem__label--context" aria-hidden="true">Context</div>
+        <div class="integration-ecosystem__label integration-ecosystem__label--action" aria-hidden="true">Action</div>
+        <div class="ai-engine" data-integrations-animate>
+          <div class="ai-engine__halo" aria-hidden="true"></div>
+          <span class="ai-engine__icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+          <strong>Preevon AI</strong>
+          <span>AI Workflow Engine</span>
+        </div>
+        ${integrationItems.map(integrationCard).join('')}
+      </div>
+      <p class="integrations-section__note" data-integrations-animate><i data-lucide="sparkles" aria-hidden="true"></i> Illustrative workflow ecosystem — connect the tools you already use and turn scattered work into one intelligent system.</p>
+    </div>
+  </section>
+`;
+
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -490,6 +565,7 @@ export const homePage = () => `
     ${featuresSection()}
     ${aiWorkflowSection()}
     ${dashboardPreviewSection()}
+    ${integrationsSection()}
   </main>
   ${footer()}
 `;
