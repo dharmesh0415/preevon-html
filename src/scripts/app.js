@@ -95,9 +95,11 @@ const initAnimations = () => {
   const workflowItems = qsa('[data-workflow-animate], [data-workflow-track], [data-workflow-card], [data-workflow-connector]');
   const dashboardItems = qsa('[data-dashboard-animate], [data-dashboard-frame]');
   const integrationItems = qsa('[data-integrations-animate]');
+  const statisticsItems = qsa('[data-statistics-animate]');
+  const statisticsSection = qs('[data-statistics-section]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -167,6 +169,33 @@ const initAnimations = () => {
       delay: 0.72,
       ease: 'power3.out',
     });
+  }
+
+  if (statisticsItems.length && statisticsSection) {
+    const revealStatistics = () => {
+      gsap.from(statisticsItems, {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.65,
+        stagger: 0.06,
+        ease: 'power3.out',
+      });
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      revealStatistics();
+    } else {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          revealStatistics();
+        },
+        { threshold: 0.2 },
+      );
+
+      observer.observe(statisticsSection);
+    }
   }
 
   if (heroProduct) {

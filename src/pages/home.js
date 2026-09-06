@@ -518,6 +518,62 @@ const integrationsSection = () => `
 `;
 
 
+const statistics = [
+  {
+    value: '85%',
+    label: 'Tasks automated',
+    description: 'Automate repeatable processes with intelligent workflows.',
+    icon: 'workflow',
+  },
+  {
+    value: '3.2×',
+    label: 'Faster workflows',
+    description: 'Move from incoming context to confident next steps faster.',
+    icon: 'zap',
+  },
+  {
+    value: '24/7',
+    label: 'AI assistance',
+    description: 'Keep helpful AI support available whenever work happens.',
+    icon: 'sparkles',
+  },
+  {
+    value: '40%',
+    label: 'Less repetitive work',
+    description: 'Give your team more space for high-value decisions.',
+    icon: 'clock-3',
+  },
+];
+
+const statisticItem = ({ value, label, description, icon }, index) => `
+  <article class="statistic-item" data-statistics-animate style="--statistic-index: ${index};">
+    <div class="statistic-item__topline">
+      <span>0${index + 1}</span>
+      <i data-lucide="${icon}" aria-hidden="true"></i>
+    </div>
+    <strong class="statistic-item__value">${value}</strong>
+    <h3>${label}</h3>
+    <p>${description}</p>
+  </article>
+`;
+
+const statisticsSection = () => `
+  <section class="statistics-section" aria-labelledby="statistics-title" data-statistics-section>
+    <div class="statistics-section__background" aria-hidden="true"><span></span><span></span></div>
+    <div class="container statistics-section__inner">
+      <div class="statistics-section__header">
+        <p class="statistics-section__eyebrow" data-statistics-animate>Built for measurable impact</p>
+        <h2 id="statistics-title" data-statistics-animate>More intelligence. Less busywork.</h2>
+        <p data-statistics-animate>See how an intelligent workspace can help teams automate repetitive work, move faster, and make better decisions.</p>
+      </div>
+      <div class="statistics-grid" aria-label="Illustrative product metrics">
+        ${statistics.map(statisticItem).join('')}
+      </div>
+      <p class="statistics-section__disclosure" data-statistics-animate><i data-lucide="sparkles" aria-hidden="true"></i>Illustrative product metrics</p>
+    </div>
+  </section>
+`;
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -566,6 +622,7 @@ export const homePage = () => `
     ${aiWorkflowSection()}
     ${dashboardPreviewSection()}
     ${integrationsSection()}
+    ${statisticsSection()}
   </main>
   ${footer()}
 `;
