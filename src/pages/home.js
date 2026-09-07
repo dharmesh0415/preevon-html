@@ -680,6 +680,94 @@ const pricingSection = () => `
   </section>
 `;
 
+
+const testimonials = [
+  {
+    name: 'Olivia Carter',
+    role: 'Product Lead',
+    company: 'Northstar Labs',
+    initials: 'OC',
+    quote:
+      'Preevon gives our team a much clearer way to turn repetitive work into reliable workflows. The experience feels powerful without becoming complicated.',
+    rating: '5.0',
+  },
+  {
+    name: 'Daniel Brooks',
+    role: 'Operations Manager',
+    company: 'Vertex Studio',
+    initials: 'DB',
+    quote:
+      'We wanted an AI workspace that felt practical, not overwhelming. Preevon makes automation easy to understand and surprisingly simple to manage.',
+    rating: '5.0',
+  },
+  {
+    name: 'Maya Patel',
+    role: 'Growth Strategist',
+    company: 'Brightline',
+    initials: 'MP',
+    quote:
+      'The biggest difference is how quickly we can move from an idea to an actual workflow. Everything feels focused, organized, and thoughtfully designed.',
+    rating: '5.0',
+  },
+  {
+    name: 'Ethan Wilson',
+    role: 'Founder',
+    company: 'Signal Works',
+    initials: 'EW',
+    quote:
+      'Preevon brings our scattered AI workflows into one place. It has the kind of clarity that makes a complex workflow feel much easier to operate.',
+    rating: '5.0',
+  },
+  {
+    name: 'Sophia Martin',
+    role: 'Customer Success Lead',
+    company: 'Atlas Collective',
+    initials: 'SM',
+    quote:
+      'Our team spends less time repeating the same manual steps and more time focusing on customers. The workflow experience is clean and easy to follow.',
+    rating: '5.0',
+  },
+  {
+    name: 'James Anderson',
+    role: 'Engineering Manager',
+    company: 'Frame Systems',
+    initials: 'JA',
+    quote:
+      'What stands out is the balance between automation and control. We can build smarter workflows while still understanding exactly what is happening.',
+    rating: '5.0',
+  },
+];
+
+const testimonialCard = ({ name, role, company, initials, quote, rating }, index) => `
+  <article class="testimonial-card ${index === 0 ? 'testimonial-card--featured' : ''}" data-testimonial-card style="--testimonial-index: ${index};">
+    <div class="testimonial-card__rating" aria-label="Illustrative ${rating} out of 5 rating">
+      <span aria-hidden="true">${Array.from({ length: 5 }, () => '<i data-lucide="star"></i>').join('')}</span>
+      <strong>${rating}</strong>
+    </div>
+    <blockquote>“${quote}”</blockquote>
+    <footer class="testimonial-card__person">
+      <span class="testimonial-card__avatar" aria-hidden="true">${initials}</span>
+      <span class="testimonial-card__identity"><strong>${name}</strong><span>${role} · ${company}</span></span>
+    </footer>
+  </article>
+`;
+
+const testimonialsSection = () => `
+  <section class="testimonials-section" id="testimonials" aria-labelledby="testimonials-title" data-testimonials-section>
+    <div class="container testimonials-section__inner">
+      <header class="testimonials-section__header" data-testimonials-animate>
+        <p class="testimonials-section__eyebrow">Built for better work</p>
+        <h2 id="testimonials-title">Teams are rethinking how they work with AI.</h2>
+        <p>From repetitive tasks to complex workflows, Preevon helps teams spend less time managing work and more time moving it forward.</p>
+      </header>
+      <div class="testimonials-grid" aria-label="Illustrative customer testimonials">
+        ${testimonials.map(testimonialCard).join('')}
+      </div>
+      <p class="testimonials-section__disclosure" data-testimonials-animate><i data-lucide="info" aria-hidden="true"></i>Illustrative testimonials for this template.</p>
+    </div>
+  </section>
+`;
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -730,6 +818,7 @@ export const homePage = () => `
     ${integrationsSection()}
     ${statisticsSection()}
     ${pricingSection()}
+    ${testimonialsSection()}
   </main>
   ${footer()}
 `;

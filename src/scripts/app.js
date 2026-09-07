@@ -151,9 +151,11 @@ const initAnimations = () => {
   const statisticsSection = qs('[data-statistics-section]');
   const pricingItems = qsa('[data-pricing-animate], [data-pricing-card]');
   const pricingSection = qs('[data-pricing-section]');
+  const testimonialItems = qsa('[data-testimonials-animate], [data-testimonial-card]');
+  const testimonialsSection = qs('[data-testimonials-section]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems, ...testimonialItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -276,6 +278,33 @@ const initAnimations = () => {
       );
 
       observer.observe(pricingSection);
+    }
+  }
+
+  if (testimonialItems.length && testimonialsSection) {
+    const revealTestimonials = () => {
+      gsap.from(testimonialItems, {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.65,
+        stagger: 0.06,
+        ease: 'power3.out',
+      });
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      revealTestimonials();
+    } else {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          revealTestimonials();
+        },
+        { threshold: 0.15 },
+      );
+
+      observer.observe(testimonialsSection);
     }
   }
 
