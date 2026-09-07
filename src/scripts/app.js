@@ -86,6 +86,58 @@ const initSmoothScroll = () => {
   requestAnimationFrame(raf);
 };
 
+const initPricing = () => {
+  const options = qsa('[data-billing-option]');
+  const prices = qsa('[data-pricing-price]');
+  const periods = qsa('[data-pricing-period]');
+  const billingNotes = qsa('[data-pricing-billing]');
+
+  if (!options.length) return;
+
+  const setBillingPeriod = (period) => {
+    const isYearly = period === 'yearly';
+
+    options.forEach((option) => {
+      const isActive = option.dataset.billingOption === period;
+      option.classList.toggle('is-active', isActive);
+      option.setAttribute('aria-checked', String(isActive));
+      option.tabIndex = isActive ? 0 : -1;
+    });
+
+    prices.forEach((price) => {
+      price.textContent = isYearly ? price.dataset.yearlyPrice : price.dataset.monthlyPrice;
+    });
+    periods.forEach((periodLabel, index) => {
+      const isCustom = prices[index].dataset.monthlyPrice === 'Custom';
+      periodLabel.textContent = isCustom ? 'Talk to our team' : '/ month';
+    });
+    billingNotes.forEach((note, index) => {
+      const isCustom = prices[index].dataset.monthlyPrice === 'Custom';
+      note.textContent = isCustom
+        ? 'Flexible options for your needs'
+        : isYearly
+          ? 'Billed yearly'
+          : '\u00a0';
+    });
+  };
+
+  options.forEach((option, index) => {
+    option.addEventListener('click', () => setBillingPeriod(option.dataset.billingOption));
+    option.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const nextIndex =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? options.length - 1
+            : (index + (event.key === 'ArrowRight' ? 1 : -1) + options.length) % options.length;
+      options[nextIndex].focus();
+      setBillingPeriod(options[nextIndex].dataset.billingOption);
+    });
+  });
+};
+
 const initAnimations = () => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const heroItems = qsa('[data-hero-animate]');
@@ -97,9 +149,11 @@ const initAnimations = () => {
   const integrationItems = qsa('[data-integrations-animate]');
   const statisticsItems = qsa('[data-statistics-animate]');
   const statisticsSection = qs('[data-statistics-section]');
+  const pricingItems = qsa('[data-pricing-animate], [data-pricing-card]');
+  const pricingSection = qs('[data-pricing-section]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -198,6 +252,33 @@ const initAnimations = () => {
     }
   }
 
+  if (pricingItems.length && pricingSection) {
+    const revealPricing = () => {
+      gsap.from(pricingItems, {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.65,
+        stagger: 0.06,
+        ease: 'power3.out',
+      });
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      revealPricing();
+    } else {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          revealPricing();
+        },
+        { threshold: 0.15 },
+      );
+
+      observer.observe(pricingSection);
+    }
+  }
+
   if (heroProduct) {
     gsap.from(heroProduct, {
       autoAlpha: 0,
@@ -233,5 +314,6 @@ const initAnimations = () => {
 
 mountApp();
 initThemeControls();
+initPricing();
 initSmoothScroll();
 initAnimations();

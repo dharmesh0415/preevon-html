@@ -574,6 +574,112 @@ const statisticsSection = () => `
   </section>
 `;
 
+const pricingPlans = [
+  {
+    name: 'Starter',
+    description: 'For individuals exploring smarter ways to work.',
+    monthlyPrice: '$0',
+    yearlyPrice: '$0',
+    cta: 'Get Started',
+    features: [
+      '1 workspace',
+      '5 AI workflows',
+      'Basic automation',
+      'Core integrations',
+      'Community support',
+    ],
+  },
+  {
+    name: 'Pro',
+    description: 'For professionals who want to automate more.',
+    monthlyPrice: '$29',
+    yearlyPrice: '$23',
+    cta: 'Start Free',
+    popular: true,
+    features: [
+      'Unlimited workflows',
+      'Advanced AI automation',
+      'Premium integrations',
+      'Workflow analytics',
+      'Priority support',
+    ],
+  },
+  {
+    name: 'Business',
+    description: 'For teams building intelligent workflows at scale.',
+    monthlyPrice: '$79',
+    yearlyPrice: '$63',
+    cta: 'Choose Business',
+    features: [
+      'Everything in Pro',
+      'Team workspaces',
+      'Advanced analytics',
+      'Workflow collaboration',
+      'Enhanced controls',
+      'Priority support',
+    ],
+  },
+  {
+    name: 'Enterprise',
+    description: 'For organizations with advanced workflow needs.',
+    monthlyPrice: 'Custom',
+    yearlyPrice: 'Custom',
+    cta: 'Contact Sales',
+    custom: true,
+    features: [
+      'Everything in Business',
+      'Custom workflows',
+      'Advanced security controls',
+      'Dedicated support',
+      'Flexible deployment options',
+      'Custom requirements',
+    ],
+  },
+];
+
+const pricingCard = (plan) => `
+  <article class="pricing-card ${plan.popular ? 'pricing-card--popular' : ''}" aria-labelledby="pricing-${plan.name.toLowerCase()}" data-pricing-card>
+    <div class="pricing-card__header">
+      ${plan.popular ? '<span class="pricing-card__badge">Most Popular</span>' : ''}
+      <h3 id="pricing-${plan.name.toLowerCase()}">${plan.name}</h3>
+      <p>${plan.description}</p>
+    </div>
+    <div class="pricing-card__price" aria-live="polite">
+      <strong data-pricing-price data-monthly-price="${plan.monthlyPrice}" data-yearly-price="${plan.yearlyPrice}">${plan.monthlyPrice}</strong>
+      <span class="pricing-card__period" data-pricing-period>${plan.custom ? 'Talk to our team' : '/ month'}</span>
+      <small data-pricing-billing>${plan.custom ? 'Flexible options for your needs' : '&nbsp;'}</small>
+    </div>
+    <a class="pricing-card__cta ${plan.popular ? 'pricing-card__cta--primary' : ''}" href="#get-started">${plan.cta}<i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+    <ul class="pricing-card__features" aria-label="${plan.name} plan features">
+      ${plan.features.map((feature) => `<li><i data-lucide="check" aria-hidden="true"></i><span>${feature}</span></li>`).join('')}
+    </ul>
+  </article>
+`;
+
+const pricingSection = () => `
+  <section class="pricing-section" id="pricing" aria-labelledby="pricing-title" data-pricing-section>
+    <div class="pricing-section__background" aria-hidden="true"><span></span></div>
+    <div class="container pricing-section__inner">
+      <div class="pricing-section__header" data-pricing-animate>
+        <p class="pricing-section__eyebrow">Simple, transparent pricing</p>
+        <h2 id="pricing-title">Choose the plan that fits your workflow.</h2>
+        <p>Start simple, scale when you need to, and give your team the intelligence to automate more work.</p>
+      </div>
+      <div class="pricing-billing" role="group" aria-label="Choose billing period" data-pricing-animate>
+        <div class="pricing-billing__controls" role="radiogroup" aria-label="Billing period">
+          <button class="pricing-billing__option is-active" type="button" role="radio" aria-checked="true" data-billing-option="monthly">Monthly</button>
+          <button class="pricing-billing__option" type="button" role="radio" aria-checked="false" data-billing-option="yearly">Yearly</button>
+        </div>
+        <span class="pricing-billing__saving">Save 20%</span>
+      </div>
+      <div class="pricing-grid">
+        ${pricingPlans.map(pricingCard).join('')}
+      </div>
+      <p class="pricing-section__note" data-pricing-animate><i data-lucide="info" aria-hidden="true"></i>All pricing shown is for demonstration purposes. Plans and features can be customized for your product.</p>
+    </div>
+  </section>
+`;
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -623,6 +729,7 @@ export const homePage = () => `
     ${dashboardPreviewSection()}
     ${integrationsSection()}
     ${statisticsSection()}
+    ${pricingSection()}
   </main>
   ${footer()}
 `;
