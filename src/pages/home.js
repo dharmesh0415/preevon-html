@@ -768,6 +768,83 @@ const testimonialsSection = () => `
   </section>
 `;
 
+const faqItems = [
+  {
+    question: 'What is Preevon?',
+    answer:
+      'Preevon is a modern AI workspace concept designed to help teams organize AI-powered workflows, automate repetitive tasks, and bring everyday work into one focused environment.',
+  },
+  {
+    question: 'Do I need technical skills to use Preevon?',
+    answer:
+      'No. Preevon is designed around a clear, approachable workflow experience so users can create and manage AI-powered processes without needing to be an AI or automation expert.',
+  },
+  {
+    question: 'Can I connect Preevon with other tools?',
+    answer:
+      "Preevon's concept supports integrations with popular workplace tools so teams can connect their existing workflows. The integrations shown in this template are illustrative and do not represent live integrations.",
+  },
+  {
+    question: 'Can I automate repetitive workflows?',
+    answer:
+      'Yes. The template is designed to showcase AI-powered workflow automation, allowing users to visualize how repetitive processes could be organized into reusable workflows.',
+  },
+  {
+    question: 'Is there a free plan?',
+    answer:
+      'Yes. The Starter plan shown in the pricing section is presented as a free demo tier. Pricing and plan details in this template can be customized to match your actual product.',
+  },
+  {
+    question: 'Can I switch between plans?',
+    answer:
+      'The pricing interface is designed to support different plans and billing periods. In this template, the pricing interaction is frontend-only and does not process real subscriptions.',
+  },
+  {
+    question: 'Does Preevon support dark mode?',
+    answer:
+      'Yes. The Preevon interface is designed with Light, Dark, and System theme support so the experience remains consistent across different viewing preferences.',
+  },
+  {
+    question: 'Can I customize Preevon for my own SaaS product?',
+    answer:
+      'Absolutely. Preevon is structured as a flexible frontend template with reusable components, design tokens, sections, and layouts that can be adapted to different AI and SaaS products.',
+  },
+];
+
+const faqItem = ({ question, answer }, index) => {
+  const isOpen = index === 0;
+  const id = `faq-item-${index + 1}`;
+
+  return `
+    <article class="faq-item ${isOpen ? 'is-open' : ''}" data-faq-item>
+      <h3 class="faq-item__heading">
+        <button class="faq-item__trigger" type="button" aria-expanded="${isOpen}" aria-controls="${id}" id="${id}-trigger" data-faq-trigger>
+          <span>${question}</span>
+          <span class="faq-item__icon" aria-hidden="true"><i data-lucide="plus"></i></span>
+        </button>
+      </h3>
+      <div class="faq-item__panel" id="${id}" role="region" aria-labelledby="${id}-trigger" aria-hidden="${!isOpen}" data-faq-panel>
+        <div class="faq-item__answer"><p>${answer}</p></div>
+      </div>
+    </article>
+  `;
+};
+
+const faqSection = () => `
+  <section class="faq-section" id="faq" aria-labelledby="faq-title" data-faq-section>
+    <div class="container faq-section__inner">
+      <header class="faq-section__intro" data-faq-animate>
+        <p class="faq-section__eyebrow">Frequently asked questions</p>
+        <h2 id="faq-title">Everything you need to know.</h2>
+        <p>Have questions about Preevon? Find quick answers about the platform, workflows, integrations, and plans.</p>
+      </header>
+      <div class="faq-list" data-faq-list>
+        ${faqItems.map(faqItem).join('')}
+      </div>
+    </div>
+  </section>
+`;
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -819,6 +896,7 @@ export const homePage = () => `
     ${statisticsSection()}
     ${pricingSection()}
     ${testimonialsSection()}
+    ${faqSection()}
   </main>
   ${footer()}
 `;

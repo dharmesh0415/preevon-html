@@ -138,6 +138,28 @@ const initPricing = () => {
   });
 };
 
+const initFaq = () => {
+  const items = qsa('[data-faq-item]');
+
+  if (!items.length) return;
+
+  const setOpenItem = (activeItem) => {
+    items.forEach((item) => {
+      const isOpen = item === activeItem && !item.classList.contains('is-open');
+      const trigger = item.querySelector('[data-faq-trigger]');
+      const panel = item.querySelector('[data-faq-panel]');
+
+      item.classList.toggle('is-open', isOpen);
+      trigger.setAttribute('aria-expanded', String(isOpen));
+      panel.setAttribute('aria-hidden', String(!isOpen));
+    });
+  };
+
+  items.forEach((item) => {
+    item.querySelector('[data-faq-trigger]').addEventListener('click', () => setOpenItem(item));
+  });
+};
+
 const initAnimations = () => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const heroItems = qsa('[data-hero-animate]');
@@ -153,9 +175,11 @@ const initAnimations = () => {
   const pricingSection = qs('[data-pricing-section]');
   const testimonialItems = qsa('[data-testimonials-animate], [data-testimonial-card]');
   const testimonialsSection = qs('[data-testimonials-section]');
+  const faqItems = qsa('[data-faq-animate], [data-faq-item]');
+  const faqSection = qs('[data-faq-section]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems, ...testimonialItems].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems, ...testimonialItems, ...faqItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -308,6 +332,33 @@ const initAnimations = () => {
     }
   }
 
+  if (faqItems.length && faqSection) {
+    const revealFaq = () => {
+      gsap.from(faqItems, {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.65,
+        stagger: 0.045,
+        ease: 'power3.out',
+      });
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      revealFaq();
+    } else {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          revealFaq();
+        },
+        { threshold: 0.15 },
+      );
+
+      observer.observe(faqSection);
+    }
+  }
+
   if (heroProduct) {
     gsap.from(heroProduct, {
       autoAlpha: 0,
@@ -344,5 +395,6 @@ const initAnimations = () => {
 mountApp();
 initThemeControls();
 initPricing();
+initFaq();
 initSmoothScroll();
 initAnimations();
