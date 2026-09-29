@@ -4,6 +4,7 @@ import { createIcons, icons } from 'lucide';
 import '../styles/app.css';
 import { homePage } from '../pages/home.js';
 import { initFooter } from './footer.js';
+import { initNewsletter } from './newsletter.js';
 import { initAnnouncementBar } from '../pages/announcement-bar.js';
 import { initNavbar } from './navbar.js';
 import { initSearchOverlay, searchOverlay } from './search-overlay.js';
@@ -18,6 +19,7 @@ const mountApp = () => {
   initNavbar();
   initSearchOverlay();
   initFooter();
+  initNewsletter();
 };
 
 const getThemeIconName = (preference) => {
@@ -177,9 +179,11 @@ const initAnimations = () => {
   const testimonialsSection = qs('[data-testimonials-section]');
   const faqItems = qsa('[data-faq-animate], [data-faq-item]');
   const faqSection = qs('[data-faq-section]');
+  const newsletterItems = qsa('[data-newsletter-animate]');
+  const newsletterSection = qs('[data-newsletter-section]');
 
   if (reduceMotion) {
-    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems, ...testimonialItems, ...faqItems].filter(Boolean), {
+    gsap.set([...heroItems, heroProduct, ...trustedItems, ...featureItems, ...workflowItems, ...dashboardItems, ...integrationItems, ...statisticsItems, ...pricingItems, ...testimonialItems, ...faqItems, ...newsletterItems].filter(Boolean), {
       autoAlpha: 1,
       clearProps: 'transform',
     });
@@ -356,6 +360,32 @@ const initAnimations = () => {
       );
 
       observer.observe(faqSection);
+    }
+  }
+
+  if (newsletterItems.length && newsletterSection) {
+    const revealNewsletter = () => {
+      gsap.from(newsletterItems, {
+        autoAlpha: 0,
+        y: 16,
+        duration: 0.6,
+        ease: 'power3.out',
+      });
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      revealNewsletter();
+    } else {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          revealNewsletter();
+        },
+        { threshold: 0.15 },
+      );
+
+      observer.observe(newsletterSection);
     }
   }
 
