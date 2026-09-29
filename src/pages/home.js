@@ -845,6 +845,27 @@ const faqSection = () => `
   </section>
 `;
 
+const newsletterSection = () => `
+  <section class="newsletter-section" aria-labelledby="newsletter-title" data-newsletter-section>
+    <div class="container newsletter-section__inner">
+      <div class="newsletter-section__content" data-newsletter-animate>
+        <p class="newsletter-section__eyebrow">Stay in the loop</p>
+        <h2 id="newsletter-title">Smarter ideas, straight to your inbox.</h2>
+        <p class="newsletter-section__description">Get practical AI insights, workflow inspiration, and product updates to help you work smarter.</p>
+        <form class="newsletter-form" data-newsletter-form>
+          <label class="newsletter-form__label" for="newsletter-email">Email address <span aria-hidden="true">*</span></label>
+          <div class="newsletter-form__field">
+            <input id="newsletter-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Enter your email address" required aria-describedby="newsletter-message newsletter-note" data-newsletter-email>
+            <button class="newsletter-form__button" type="submit" data-newsletter-submit>Subscribe <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+          </div>
+          <p class="newsletter-form__message" id="newsletter-message" role="status" aria-live="polite" data-newsletter-message></p>
+        </form>
+        <p class="newsletter-section__note" id="newsletter-note"><i data-lucide="sparkle" aria-hidden="true"></i>No spam. Just useful insights and occasional updates.</p>
+      </div>
+    </div>
+  </section>
+`;
+
 const ctaSection = () => `
   <section class="cta-section" id="get-started" aria-labelledby="cta-title" data-cta-section>
     <div class="container">
@@ -921,6 +942,7 @@ export const homePage = () => `
     ${pricingSection()}
     ${testimonialsSection()}
     ${faqSection()}
+    ${newsletterSection()}
     ${ctaSection()}
   </main>
   ${footer()}

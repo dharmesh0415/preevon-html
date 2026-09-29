@@ -88,19 +88,6 @@ export const footer = () => `
           </div>
         </section>
 
-        <section class="site-footer__newsletter" aria-labelledby="footer-newsletter-heading">
-          <span class="eyebrow">Newsletter</span>
-          <h2 id="footer-newsletter-heading">Stay ahead with AI.</h2>
-          <p>Get product updates, AI insights, and useful resources delivered to your inbox.</p>
-          <form class="site-footer__form" novalidate data-newsletter-form>
-            <label class="sr-only" for="footer-email">Email address</label>
-            <div class="site-footer__field">
-              <input id="footer-email" name="email" type="email" placeholder="Enter your email" autocomplete="email" aria-describedby="footer-newsletter-message" data-newsletter-email />
-              <button type="submit">Subscribe</button>
-            </div>
-            <p class="site-footer__message" id="footer-newsletter-message" aria-live="polite" data-newsletter-message></p>
-          </form>
-        </section>
       </div>
 
       <nav class="site-footer__nav" aria-label="Footer navigation">

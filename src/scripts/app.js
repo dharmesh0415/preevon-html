@@ -4,6 +4,7 @@ import { createIcons, icons } from 'lucide';
 import '../styles/app.css';
 import { homePage } from '../pages/home.js';
 import { initFooter } from './footer.js';
+import { initNewsletter } from './newsletter.js';
 import { initAnnouncementBar } from '../pages/announcement-bar.js';
 import { initNavbar } from './navbar.js';
 import { initSearchOverlay, searchOverlay } from './search-overlay.js';
@@ -18,6 +19,7 @@ const mountApp = () => {
   initNavbar();
   initSearchOverlay();
   initFooter();
+  initNewsletter();
 };
 
 const getThemeIconName = (preference) => {
