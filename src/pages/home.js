@@ -845,6 +845,30 @@ const faqSection = () => `
   </section>
 `;
 
+const ctaSection = () => `
+  <section class="cta-section" id="get-started" aria-labelledby="cta-title" data-cta-section>
+    <div class="container">
+      <div class="cta-section__panel">
+        <div class="cta-section__accent" aria-hidden="true"><span></span><span></span></div>
+        <div class="cta-section__content">
+          <p class="cta-section__eyebrow" data-cta-animate>Your next chapter starts here</p>
+          <h2 id="cta-title" data-cta-animate>Make room for work that matters.</h2>
+          <p class="cta-section__description" data-cta-animate>Bring your workflows together, simplify repetitive tasks, and explore a smarter way to work with AI.</p>
+          <div class="cta-section__actions" data-cta-animate>
+            <a class="hero-button hero-button--primary cta-section__button" href="#get-started">
+              Get Started <i data-lucide="arrow-right" aria-hidden="true"></i>
+            </a>
+            <a class="hero-button hero-button--secondary cta-section__button" href="#features">
+              Explore Features <i data-lucide="arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+          <p class="cta-section__note" data-cta-animate><i data-lucide="sparkles" aria-hidden="true"></i>Discover what a more connected workflow could look like.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+`;
+
 export const homePage = () => `
   ${announcementBar()}
   ${navbar()}
@@ -897,6 +921,7 @@ export const homePage = () => `
     ${pricingSection()}
     ${testimonialsSection()}
     ${faqSection()}
+    ${ctaSection()}
   </main>
   ${footer()}
 `;
